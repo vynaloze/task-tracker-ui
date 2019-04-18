@@ -10,30 +10,68 @@ function Project(props) {
 }
 
 class Projects extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            error: null,
+            isLoaded: false,
+            items: []
+        };
+    }
+
+    componentDidMount() {
+        fetch("http://localhost:3000/api/Projects")
+            .then(res => {
+                console.log(res);
+                return res;
+            })
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        isLoaded: true,
+                        items: result
+                    });
+                },
+                (error) => {
+                    this.setState({
+                        isLoaded: true,
+                        error
+                    });
+                }
+            )
+    }
+
     render() {
-        const projectsJson = [
-            {
-                "name": "string",
-                "id": 1
-            },
-            {
-                "name": "222",
-                "id": 2
-            }
-        ];
+        // const items = [
+        //     {
+        //         "name": "string",
+        //         "id": 1
+        //     },
+        //     {
+        //         "name": "222",
+        //         "id": 2
+        //     }
+        // ];
 
-        const projects = projectsJson.map((p) => (
-            <div>
-                <Project value={p}/>
-            </div>
-        ));
+        const {error, isLoaded, items} = this.state;
+        if (error) {
+            return <div>Error: {error.message}</div>;
+        } else if (!isLoaded) {
+            return <div>Loading...</div>;
+        } else {
+            const projects = items.map((p) => (
+                <div>
+                    <Project value={p}/>
+                </div>
+            ));
+            return (
+                <div className='projects'>
+                    {projects}
+                </div>
 
-        return (
-            <div className='projects'>
-                {projects}
-            </div>
-
-        )
+            )
+        }
     }
 }
 
