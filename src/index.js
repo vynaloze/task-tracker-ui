@@ -8,8 +8,6 @@ class ToDoTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showAssigned: props.showAssigned,
-            showFinished: props.showFinished,
             error: null,
             isLoaded: false,
             items: []
@@ -40,19 +38,15 @@ class ToDoTable extends React.Component {
     }
 
     render() {
-        const {error, isLoaded, items} = this.state;
+        let {error, isLoaded, items} = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else {
-            const columns = [{
+            let columns = [{
                 Header: 'Task',
                 accessor: 'name'
-            }, {
-                id: 'finished',
-                Header: 'Finished',
-                accessor: d => d.endTime != null ? 'yes' : 'no'
             }, {
                 id: 'projectName',
                 Header: 'Project',
@@ -67,8 +61,22 @@ class ToDoTable extends React.Component {
                     }
                     return <button>Assign me!</button>
                 },
+            }];
+
+            if (this.props.showFinished) {
+                columns = columns.concat([{
+                    id: 'finished',
+                    Header: 'Finished',
+                    accessor: d => d.endTime != null ? 'yes' : 'no'
+                }])
+            } else {
+                items = items.filter(i => i.endTime == null);
             }
-            ];
+
+            if (!this.props.showAssigned) {
+                items = items.filter(i => i.user == null);
+            }
+
             return (
                 <ReactTable
                     data={items}
@@ -81,10 +89,41 @@ class ToDoTable extends React.Component {
 
 
 class Main extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            showAssigned: true,
+            showFinished: true
+        };
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({
+            [event.target.name]: event.target.checked
+        })
+    }
+
     render() {
         return (
             <div>
-                <ToDoTable showAssigned={true} showFinished={true}/>
+                <label>
+                    Show Finished:
+                    <input
+                        name="showFinished"
+                        type="checkbox"
+                        checked={this.state.showFinished}
+                        onChange={this.handleChange}/>
+                </label>
+                <label>
+                    Show Assigned:
+                    <input
+                        name="showAssigned"
+                        type="checkbox"
+                        checked={this.state.showAssigned}
+                        onChange={this.handleChange}/>
+                </label>
+                <ToDoTable showAssigned={this.state.showAssigned} showFinished={this.state.showFinished}/>
             </div>
 
         );
