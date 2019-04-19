@@ -60,25 +60,39 @@ class ToDoTable extends React.Component {
                         return <div>{props.value}</div>
                     }
                     return <button>Assign me!</button>
-                },
-            }];
+                }
+            }, {
+                id: 'finished',
+                Header: 'Finished',
+                accessor: d => d.endTime != null ? 'yes' : 'no'
+            }, {
+                id: 'startTime',
+                Header: 'Started Work',
+                accessor: d => d.startTime != null ? d.startTime : '-'
+            }, {
+                id: 'endTime',
+                Header: 'Finished Work',
+                accessor: d => d.endTime != null ? d.endTime : '-'
+            }, {
+                id: 'duration',
+                Header: 'Worked Hours',
+                accessor: d => d.endTime != null ? Math.round((new Date(d.endTime) - new Date(d.startTime)) / 36000) / 100 : '-'
+            }
+            ];
 
             if (this.props.showFinished) {
-                columns = columns.concat([{
-                    id: 'finished',
-                    Header: 'Finished',
-                    accessor: d => d.endTime != null ? 'yes' : 'no'
-                }])
+                columns = columns.concat([])
             } else {
                 items = items.filter(i => i.endTime == null);
             }
-
             if (!this.props.showAssigned) {
                 items = items.filter(i => i.user == null);
             }
 
             return (
                 <ReactTable
+                    className={"-striped -highlight"}
+                    defaultPageSize={5}
                     data={items}
                     columns={columns}
                 />
@@ -92,8 +106,8 @@ class Main extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showAssigned: true,
-            showFinished: true
+            showAssigned: false,
+            showFinished: false
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -107,25 +121,32 @@ class Main extends React.Component {
     render() {
         return (
             <div>
-                <label>
-                    Show Finished:
-                    <input
-                        name="showFinished"
-                        type="checkbox"
-                        checked={this.state.showFinished}
-                        onChange={this.handleChange}/>
-                </label>
-                <label>
-                    Show Assigned:
-                    <input
-                        name="showAssigned"
-                        type="checkbox"
-                        checked={this.state.showAssigned}
-                        onChange={this.handleChange}/>
-                </label>
-                <ToDoTable showAssigned={this.state.showAssigned} showFinished={this.state.showFinished}/>
+                <div>
+                    <div>
+                        General Overview
+                    </div>
+                    <label>
+                        Show Finished:
+                        <input
+                            name="showFinished"
+                            type="checkbox"
+                            checked={this.state.showFinished}
+                            onChange={this.handleChange}/>
+                    </label>
+                    <label>
+                        Show Assigned:
+                        <input
+                            name="showAssigned"
+                            type="checkbox"
+                            checked={this.state.showAssigned}
+                            onChange={this.handleChange}/>
+                    </label>
+                    <ToDoTable showAssigned={this.state.showAssigned} showFinished={this.state.showFinished}/>
+                </div>
+                <div>
+                    Weekly Overview
+                </div>
             </div>
-
         );
     }
 }
