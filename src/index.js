@@ -3,7 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import 'react-table/react-table.css'
 import ToDoTable from './ToDoTable'
+import WeeklyOverview from "./WeeklyOverview";
+import 'react-week-calendar/dist/style.css';
 
+//todo
+// 1. define projects
+// 2. define tasks
+// 3. current user
+// 4. showMine
+// 5. enterUsedTime
 
 class Main extends React.Component {
     constructor(props) {
@@ -82,11 +90,9 @@ class Main extends React.Component {
                     </div>
                     <div>
                         <div>
-                            Weekly Overview
+                            Your Weekly Overview
                         </div>
-                        <div>
-
-                        </div>
+                        <WeeklyOverview data={this.state.data}/>
                     </div>
                 </div>
             );
