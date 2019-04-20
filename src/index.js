@@ -4,13 +4,13 @@ import './index.css';
 import 'react-table/react-table.css'
 import ToDoTable from './ToDoTable'
 import WeeklyOverview from "./WeeklyOverview";
+import Menu from "./Menu"
 
 //todo
-// 1. define projects
-// 2. define tasks
 // 3. current user
 // 4. showMine
-// 5. enterUsedTime
+// 5. log time
+// 6. assign to project
 
 class Main extends React.Component {
     constructor(props) {
@@ -26,6 +26,10 @@ class Main extends React.Component {
     }
 
     componentDidMount() {
+        this.loadToDos();
+    }
+
+    loadToDos() {
         fetch("http://localhost:3000/api/ToDos")
             .then(res => {
                 console.log(res);
@@ -62,6 +66,7 @@ class Main extends React.Component {
         } else {
             return (
                 <div>
+                    <Menu reloadParentData={() => this.loadToDos()}/>
                     <div>
                         <div>
                             General Overview
