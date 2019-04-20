@@ -8,7 +8,8 @@
     "react-scripts": "2.1.8",
     "react-table": "^6.9.2",
     "react-week-calendar": "^0.1.2",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "react-datepicker": "^2.4.0"
   },
   "scripts": {
     "start": "react-scripts start",

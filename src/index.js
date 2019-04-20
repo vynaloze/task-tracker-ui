@@ -4,7 +4,6 @@ import './index.css';
 import 'react-table/react-table.css'
 import ToDoTable from './ToDoTable'
 import WeeklyOverview from "./WeeklyOverview";
-import 'react-week-calendar/dist/style.css';
 
 //todo
 // 1. define projects

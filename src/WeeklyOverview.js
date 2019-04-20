@@ -1,7 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 import WeekCalendar from 'react-week-calendar';
-
+import DatePicker from 'react-datepicker';
+import 'react-week-calendar/dist/style.css';
+import "react-datepicker/dist/react-datepicker.css";
 
 // todo
 // 2. datepicker to select first day
@@ -12,7 +14,7 @@ export default class WeeklyOverview extends React.Component {
     constructor(props) {
         super(props);
         const filteredData = props.data
-           //todo .filter(d => d.user == CURRENT_USER)
+        //todo .filter(d => d.user == CURRENT_USER)
             .filter(d => d.endTime != null);
         const parsedData = filteredData.map(d => {
             return {
@@ -24,8 +26,11 @@ export default class WeeklyOverview extends React.Component {
         });
         this.state = {
             lastUid: 4,
-            selectedIntervals: parsedData
-        }
+            selectedIntervals: parsedData,
+            firstDay: new Date()
+        };
+
+        this.handleFirstDayChange = this.handleFirstDayChange.bind(this);
     }
 
     handleEventRemove = (event) => {
@@ -63,17 +68,34 @@ export default class WeeklyOverview extends React.Component {
         })
     };
 
+    handleFirstDayChange(day) {
+        this.setState({
+            firstDay: day
+        })
+    }
+
     render() {
-        return <WeekCalendar
-            firstDay={moment().subtract(3, 'days')}
-            startTime={moment({h: 8, m: 0})}
-            endTime={moment({h: 20, m: 0})}
-            numberOfDays={7}
-            scaleUnit={30}
-            selectedIntervals={this.state.selectedIntervals}
-            onIntervalSelect={this.handleSelect}
-            onIntervalUpdate={this.handleEventUpdate}
-            onIntervalRemove={this.handleEventRemove}
-        />
+        return <div style={{display: "flex"}}>
+            <div>
+                Select starting date:
+                <DatePicker
+                    inline
+                    todayButton={"Today"}
+                    selected={this.state.firstDay}
+                    onChange={this.handleFirstDayChange}
+                />
+            </div>
+            <WeekCalendar
+                firstDay={moment(this.state.firstDay)}
+                startTime={moment({h: 8, m: 0})}
+                endTime={moment({h: 20, m: 0})}
+                numberOfDays={7}
+                scaleUnit={30}
+                selectedIntervals={this.state.selectedIntervals}
+                onIntervalSelect={this.handleSelect}
+                onIntervalUpdate={this.handleEventUpdate}
+                onIntervalRemove={this.handleEventRemove}
+            />
+        </div>
     }
 }
