@@ -7,7 +7,6 @@ import Menu from "./Menu"
 
 //todo
 // 5. log time
-// 6. assign to project
 // 7. reset password
 
 export default class Home extends React.Component {
