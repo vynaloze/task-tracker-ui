@@ -1,19 +1,21 @@
 import React from 'react'
 
 export default class Auth {
-    static userId = null;
-
     static isLoggedIn() {
         return this.getAuthHeader() != null;
     }
 
     static logOut() {
         localStorage.removeItem("Authorization");
-        Auth.userId = null;
+        localStorage.removeItem("userId")
     }
 
     static getAuthHeader() {
         return localStorage.getItem("Authorization");
+    }
+
+    static getUserId() {
+        return localStorage.getItem("userId");
     }
 
     static logIn = async (username, password) => {
@@ -26,8 +28,9 @@ export default class Auth {
         });
         const status = await response.status;
         if (status === 200) {
+            let resp = await response.json();
             localStorage.setItem("Authorization", auth);
-            Auth.userId = await response.json()["id"];
+            localStorage.setItem("userId", resp.id);
             return true;
         } else {
             return false;

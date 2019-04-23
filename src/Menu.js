@@ -59,11 +59,7 @@ export default class Menu extends React.Component {
                 'Content-Type': 'application/json',
             },
             body: data
-        }).then(res => {
-            console.log(res);
-            return res;
-        })
-            .then(res => res.json())
+        }).then(res => res.json())
             .then(
                 (result) => {
                     this.setState({

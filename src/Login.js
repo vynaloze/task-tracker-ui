@@ -136,7 +136,7 @@ export default class Login extends React.Component {
                 >
                     <h2>{this.state.confirmModalTitle}</h2>
                     {this.state.confirmModalMessage}<br/>
-                    {this.state.isLoading ? null : <button onClick={this.handleCloseConfirmModal}>Close</button>}
+                    {this.state.isLoading ? null : <button onClick={() => this.handleCloseConfirmModal}>Close</button>}
                 </ReactModal>
             </div>
         );

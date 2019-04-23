@@ -4,12 +4,14 @@ import WeekCalendar from 'react-week-calendar';
 import DatePicker from 'react-datepicker';
 import 'react-week-calendar/dist/style.css';
 import "react-datepicker/dist/react-datepicker.css";
+import Auth from "./Auth"
 
 export default class WeeklyOverview extends React.Component {
     constructor(props) {
         super(props);
+        console.log(props.data);
         const filteredData = props.data
-        //todo .filter(d => d.user == CURRENT_USER)
+            .filter(d => d.user != null && d.user.id === Number(Auth.getUserId()))
             .filter(d => d.endTime != null);
         const parsedData = filteredData.map(d => {
             return {

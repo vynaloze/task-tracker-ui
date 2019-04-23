@@ -30,10 +30,6 @@ export default class Home extends React.Component {
 
     loadToDos() {
         fetch("http://localhost:3000/api/ToDos")
-            .then(res => {
-                console.log(res);
-                return res;
-            })
             .then(res => res.json())
             .then(
                 (result) => {
@@ -89,6 +85,7 @@ export default class Home extends React.Component {
                         <ToDoTable showAssigned={this.state.showAssigned}
                                    showFinished={this.state.showFinished}
                                    data={this.state.data}
+                                   reloadParentData={() => this.loadToDos()}
                         />
                     </div>
                     <div>
