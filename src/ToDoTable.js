@@ -69,8 +69,12 @@ export default class ToDoTable extends React.Component {
             data = data.filter(i => i.endTime == null);
         }
 
-        if (!this.props.showAssigned) {
-            data = data.filter(i => i.user == null);
+        if (this.props.showOnlyMine) {
+            data = data.filter(i => i.user != null && i.user.id === Number(Auth.getUserId()));
+        } else {
+            if (!this.props.showAssigned) {
+                data = data.filter(i => i.user == null);
+            }
         }
 
         return (

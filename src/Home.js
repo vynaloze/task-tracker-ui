@@ -6,7 +6,6 @@ import WeeklyOverview from "./WeeklyOverview";
 import Menu from "./Menu"
 
 //todo
-// 4. showMine
 // 5. log time
 // 6. assign to project
 // 7. reset password
@@ -17,6 +16,7 @@ export default class Home extends React.Component {
         this.state = {
             showAssigned: false,
             showFinished: false,
+            showOnlyMine: true,
             data: null,
             error: null,
             isLoaded: false
@@ -67,6 +67,14 @@ export default class Home extends React.Component {
                             General Overview
                         </div>
                         <label>
+                            Show Only Mine:
+                            <input
+                                name="showOnlyMine"
+                                type="checkbox"
+                                checked={this.state.showOnlyMine}
+                                onChange={this.handleChange}/>
+                        </label>
+                        <label>
                             Show Finished:
                             <input
                                 name="showFinished"
@@ -84,6 +92,7 @@ export default class Home extends React.Component {
                         </label>
                         <ToDoTable showAssigned={this.state.showAssigned}
                                    showFinished={this.state.showFinished}
+                                   showOnlyMine={this.state.showOnlyMine}
                                    data={this.state.data}
                                    reloadParentData={() => this.loadToDos()}
                         />
