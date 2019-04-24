@@ -73,7 +73,8 @@ export default class ToDoTable extends React.Component {
                 if (props.value !== '') {
                     return <div>{props.value}</div>
                 }
-                return <button onClick={() => this.handleOpenAssignProjects(props.original.id)}>Assign</button>
+                return <button className="btn btn-secondary btn-sm"
+                               onClick={() => this.handleOpenAssignProjects(props.original.id)}>Assign</button>
             }
         }, {
             id: 'user',
@@ -83,7 +84,8 @@ export default class ToDoTable extends React.Component {
                 if (props.value !== '') {
                     return <div>{props.value}</div>
                 }
-                return <button onClick={() => this.handleUserAssignment(props.original.id, Auth.getUserId())}>Assign me!
+                return <button className="btn btn-secondary btn-sm"
+                               onClick={() => this.handleUserAssignment(props.original.id, Auth.getUserId())}>Assign me!
                 </button>
             }
         }, {
@@ -94,10 +96,8 @@ export default class ToDoTable extends React.Component {
                 if (props.value !== '') {
                     return <div>{props.value}</div>
                 }
-                return <div>
-                    No -
-                    <button onClick={() => this.handleOpenLogTime(props.original.id)}>Log Time</button>
-                </div>
+                return <button className="btn btn-secondary btn-sm"
+                               onClick={() => this.handleOpenLogTime(props.original.id)}>Log Time</button>
             }
         }, {
             id: 'startTime',

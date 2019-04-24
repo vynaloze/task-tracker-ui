@@ -18,6 +18,7 @@ export default class Menu extends React.Component {
         this.handleOpenCreateModal = this.handleOpenCreateModal.bind(this);
         this.handleCloseCreateModal = this.handleCloseCreateModal.bind(this);
         this.handleCloseConfirmModal = this.handleCloseConfirmModal.bind(this);
+        this.handleDisplayOptionsChange = this.handleDisplayOptionsChange.bind(this);
     }
 
     handleChange(event) {
@@ -85,11 +86,55 @@ export default class Menu extends React.Component {
             )
     }
 
+    handleDisplayOptionsChange(event) {
+        this.props.onDisplayOptionsChange(event.target.name, event.target.checked);
+    }
+
     render() {
-        return <div style={{display: "flex"}}>
-            TASK TRACKER
-            <button onClick={() => this.handleOpenCreateModal('ToDo')}>Create Task</button>
-            <button onClick={() => this.handleOpenCreateModal('Project')}>Create Project</button>
+        return <div className="container-fluid bg-secondary text-white">
+            <div className="row">
+                <div className="col-6">
+                    <div className="row">
+                        <div className="col-2">
+                            <button className="btn btn-default btn-sm" onClick={() => this.handleOpenCreateModal('ToDo')}>Create Task</button>
+                        </div>
+                        <div className="col-10">
+                            <button className="btn btn-default btn-sm" onClick={() => this.handleOpenCreateModal('Project')}>Create Project</button>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-2">
+                    <label>
+                        Show Only Mine:
+                        <input
+                            name="showOnlyMine"
+                            type="checkbox"
+                            checked={this.state.showOnlyMine}
+                            defaultChecked={true}
+                            onChange={this.handleDisplayOptionsChange}/>
+                    </label>
+                </div>
+                <div className="col-2">
+                    <label>
+                        Show Finished:
+                        <input
+                            name="showFinished"
+                            type="checkbox"
+                            checked={this.state.showFinished}
+                            onChange={this.handleDisplayOptionsChange}/>
+                    </label>
+                </div>
+                <div className="col-2">
+                    <label>
+                        Show Assigned:
+                        <input
+                            name="showAssigned"
+                            type="checkbox"
+                            checked={this.state.showAssigned}
+                            onChange={this.handleDisplayOptionsChange}/>
+                    </label>
+                </div>
+            </div>
 
             {/*Create modal*/}
             <ReactModal

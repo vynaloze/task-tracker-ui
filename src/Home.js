@@ -22,7 +22,6 @@ export default class Home extends React.Component {
             error: null,
             isLoaded: false
         };
-        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
@@ -48,9 +47,10 @@ export default class Home extends React.Component {
             )
     }
 
-    handleChange(event) {
+
+    onDisplayOptionsChange(name, value) {
         this.setState({
-            [event.target.name]: event.target.checked
+            [name]: value
         })
     }
 
@@ -62,48 +62,17 @@ export default class Home extends React.Component {
         } else {
             return (
                 <div>
-                    <Menu reloadParentData={() => this.loadToDos()}/>
-                    <div>
-                        <div>
-                            General Overview
-                        </div>
-                        <label>
-                            Show Only Mine:
-                            <input
-                                name="showOnlyMine"
-                                type="checkbox"
-                                checked={this.state.showOnlyMine}
-                                onChange={this.handleChange}/>
-                        </label>
-                        <label>
-                            Show Finished:
-                            <input
-                                name="showFinished"
-                                type="checkbox"
-                                checked={this.state.showFinished}
-                                onChange={this.handleChange}/>
-                        </label>
-                        <label>
-                            Show Assigned:
-                            <input
-                                name="showAssigned"
-                                type="checkbox"
-                                checked={this.state.showAssigned}
-                                onChange={this.handleChange}/>
-                        </label>
-                        <ToDoTable showAssigned={this.state.showAssigned}
-                                   showFinished={this.state.showFinished}
-                                   showOnlyMine={this.state.showOnlyMine}
-                                   data={this.state.data}
-                                   reloadParentData={() => this.loadToDos()}
-                        />
-                    </div>
-                    <div>
-                        <div>
-                            Your Weekly Overview
-                        </div>
-                        <WeeklyOverview data={this.state.data}/>
-                    </div>
+                    <Menu
+                        reloadParentData={() => this.loadToDos()}
+                        onDisplayOptionsChange={(name, value) => this.onDisplayOptionsChange(name, value)}
+                    />
+                    <ToDoTable showAssigned={this.state.showAssigned}
+                               showFinished={this.state.showFinished}
+                               showOnlyMine={this.state.showOnlyMine}
+                               data={this.state.data}
+                               reloadParentData={() => this.loadToDos()}
+                    />
+                    <WeeklyOverview data={this.state.data}/>
                 </div>
             );
         }

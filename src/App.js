@@ -15,14 +15,29 @@ export default class App extends Component {
     render() {
         return (
             <Router>
-                <div>
-                    <Link to="/">Home</Link>
-                    <Link to="/logout">Logout</Link>
-
-                    <PrivateRoute exact path="/" component={Home}/>
-                    <Route path="/login" component={Login}/>
-                    <Route path="/logout" component={Logout}/>
+                <div className="navbar bg-dark navbar-dark">
+                    <div className="container-fluid text-white">
+                        <div className="navbar-brand">Task Tracker</div>
+                            <ul className="navbar-nav">
+                                <li className="nav-item-active">
+                                    <Link className="text-white" to="/">Home</Link>
+                                </li>
+                            </ul>
+                            <ul className="nav navbar-nav">
+                                <li className="nav-item">
+                                    <Link className="text-white" to="/account">Account</Link>
+                                </li>
+                            </ul>
+                            <ul className="nav navbar-nav">
+                                <li className="nav-item">
+                                    <Link className="text-white" to="/logout">Logout</Link>
+                                </li>
+                            </ul>
+                    </div>
                 </div>
+                <PrivateRoute exact path="/" component={Home}/>
+                <Route path="/login" component={Login}/>
+                <Route path="/logout" component={Logout}/>
             </Router>
         );
     }

@@ -35,25 +35,29 @@ export default class WeeklyOverview extends React.Component {
             }
         });
 
-        return <div style={{display: "flex"}}>
-            <div>
-                Select starting date:
-                <DatePicker
-                    inline
-                    todayButton={"Today"}
-                    selected={this.state.firstDay}
-                    onChange={this.handleFirstDayChange}
-                />
+        return <div className="container-fluid">
+            <div className="row">
+                <div className="col-2">
+                    <h5>Starting Date</h5>
+                    <DatePicker
+                        inline
+                        todayButton={"Today"}
+                        selected={this.state.firstDay}
+                        onChange={this.handleFirstDayChange}
+                    />
+                </div>
+                <div className="col-10">
+                    <WeekCalendar
+                        firstDay={moment(this.state.firstDay)}
+                        startTime={moment({h: 8, m: 0})}
+                        endTime={moment({h: 20, m: 0})}
+                        numberOfDays={7}
+                        scaleUnit={30}
+                        selectedIntervals={parsedData}
+                        useModal={false}
+                    />
+                </div>
             </div>
-            <WeekCalendar
-                firstDay={moment(this.state.firstDay)}
-                startTime={moment({h: 8, m: 0})}
-                endTime={moment({h: 20, m: 0})}
-                numberOfDays={7}
-                scaleUnit={30}
-                selectedIntervals={parsedData}
-                useModal={false}
-            />
         </div>
     }
 }
