@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default class Auth {
     static isLoggedIn() {
         return this.getAuthHeader() != null;

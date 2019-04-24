@@ -2,17 +2,21 @@ import React from "react";
 import ReactTable from "react-table";
 import Auth from "./Auth"
 import ToDoTableAssignProject from "./ToDoTableAssignProject";
+import ToDoTableLogTime from "./ToDoTableLogTime";
 
 export default class ToDoTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             showAssignProjects: false,
+            showLogTime: false,
             todoId: null
         };
         this.handleUserAssignment = this.handleUserAssignment.bind(this);
         this.handleOpenAssignProjects = this.handleOpenAssignProjects.bind(this);
         this.handleCloseAssignProjects = this.handleCloseAssignProjects.bind(this);
+        this.handleOpenLogTime = this.handleOpenLogTime.bind(this);
+        this.handleCloseLogTime = this.handleCloseLogTime.bind(this);
     }
 
     handleUserAssignment(todoId, userId) {
@@ -43,6 +47,20 @@ export default class ToDoTable extends React.Component {
         this.props.reloadParentData();
     }
 
+    handleOpenLogTime(todoId) {
+        this.setState({
+            showLogTime: true,
+            todoId: todoId
+        });
+    }
+
+    handleCloseLogTime() {
+        this.setState({
+            showLogTime: false
+        });
+        this.props.reloadParentData();
+    }
+
     render() {
         let columns = [{
             Header: 'Task',
@@ -65,13 +83,22 @@ export default class ToDoTable extends React.Component {
                 if (props.value !== '') {
                     return <div>{props.value}</div>
                 }
-                return <button onClick={() => this.handleUserAssignment(props.original.id, Auth.getUserId())}>Assign
-                    me!</button>
+                return <button onClick={() => this.handleUserAssignment(props.original.id, Auth.getUserId())}>Assign me!
+                </button>
             }
         }, {
             id: 'finished',
             Header: 'Finished',
-            accessor: d => d.endTime != null ? 'yes' : 'no'
+            accessor: d => d.endTime != null ? 'Yes' : '',
+            Cell: props => {
+                if (props.value !== '') {
+                    return <div>{props.value}</div>
+                }
+                return <div>
+                    No -
+                    <button onClick={() => this.handleOpenLogTime(props.original.id)}>Log Time</button>
+                </div>
+            }
         }, {
             id: 'startTime',
             Header: 'Started Work',
@@ -115,7 +142,12 @@ export default class ToDoTable extends React.Component {
                     show={this.state.showAssignProjects}
                     todoId={this.state.todoId}
                     onClose={this.handleCloseAssignProjects}
-                    />
+                />
+                <ToDoTableLogTime
+                    show={this.state.showLogTime}
+                    todoId={this.state.todoId}
+                    onClose={this.handleCloseLogTime}
+                />
             </div>
         )
     }

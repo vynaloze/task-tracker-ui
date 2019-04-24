@@ -18,6 +18,7 @@ export default class ToDoTableAssignProject extends React.Component {
         this.handleProjectAssignment = this.handleProjectAssignment.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.loadProjects = this.loadProjects.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
 
     componentDidMount() {
@@ -87,6 +88,19 @@ export default class ToDoTableAssignProject extends React.Component {
         this.setState({selectedProject: selected});
     }
 
+    handleClose(){
+        this.setState({
+            stateSelect: true,
+            stateWaiting: false,
+            stateSuccess: false,
+            stateError: false,
+            error: null,
+            startDate: null,
+            endDate: null
+        });
+        this.props.onClose();
+    }
+
     render() {
         return(
             <ReactModal
@@ -108,9 +122,9 @@ export default class ToDoTableAssignProject extends React.Component {
                     : null}
                 {this.state.stateWaiting ? "Please wait..." : null}
                 {this.state.stateSuccess ?
-                    <div> Successfully assigned. <button onClick={this.props.onClose}>OK</button></div> : null}
+                    <div> Successfully assigned. <button onClick={this.handleClose}>OK</button></div> : null}
                 {this.state.stateError ? <div> Task failed successfully: {this.state.error}
-                    <button onClick={this.props.onClose}>OK</button>
+                    <button onClick={this.handleClose}>OK</button>
                 </div> : null}
             </ReactModal>
         )

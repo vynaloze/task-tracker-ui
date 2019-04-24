@@ -9,22 +9,8 @@ import Auth from "./Auth"
 export default class WeeklyOverview extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props.data);
-        const filteredData = props.data
-            .filter(d => d.user != null && d.user.id === Number(Auth.getUserId()))
-            .filter(d => d.endTime != null);
-        const parsedData = filteredData.map(d => {
-            return {
-                uid: d.id,
-                start: moment(d.startTime),
-                end: moment(d.endTime),
-                value: d.name
-            }
-        });
         this.state = {
-            lastUid: 4,
-            selectedIntervals: parsedData,
-            firstDay: new Date()
+            firstDay: moment().subtract(6, 'days').toDate()
         };
 
         this.handleFirstDayChange = this.handleFirstDayChange.bind(this);
@@ -37,6 +23,18 @@ export default class WeeklyOverview extends React.Component {
     }
 
     render() {
+        const filteredData = this.props.data
+            .filter(d => d.user != null && d.user.id === Number(Auth.getUserId()))
+            .filter(d => d.endTime != null);
+        const parsedData = filteredData.map(d => {
+            return {
+                uid: d.id,
+                start: moment(d.startTime),
+                end: moment(d.endTime),
+                value: d.name
+            }
+        });
+
         return <div style={{display: "flex"}}>
             <div>
                 Select starting date:
@@ -53,7 +51,7 @@ export default class WeeklyOverview extends React.Component {
                 endTime={moment({h: 20, m: 0})}
                 numberOfDays={7}
                 scaleUnit={30}
-                selectedIntervals={this.state.selectedIntervals}
+                selectedIntervals={parsedData}
                 useModal={false}
             />
         </div>
