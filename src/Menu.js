@@ -32,6 +32,13 @@ export default class Menu extends React.Component {
     }
 
     handleCloseCreateModal() {
+        if (this.state.formName == null || this.state.formName === "") {
+            this.setState({
+                showCreateModal: false
+            });
+            return;
+        }
+
         this.setState({
             showCreateModal: false,
             isLoading: true,
