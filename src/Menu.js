@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactModal from 'react-modal'
+import styles from './modal.css.js'
 
 export default class Menu extends React.Component {
     constructor(props) {
@@ -96,10 +97,14 @@ export default class Menu extends React.Component {
                 <div className="col-6">
                     <div className="row">
                         <div className="col-2">
-                            <button className="btn btn-default btn-sm" onClick={() => this.handleOpenCreateModal('ToDo')}>Create Task</button>
+                            <button className="btn btn-default btn-sm"
+                                    onClick={() => this.handleOpenCreateModal('ToDo')}>Create Task
+                            </button>
                         </div>
                         <div className="col-10">
-                            <button className="btn btn-default btn-sm" onClick={() => this.handleOpenCreateModal('Project')}>Create Project</button>
+                            <button className="btn btn-default btn-sm"
+                                    onClick={() => this.handleOpenCreateModal('Project')}>Create Project
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -141,17 +146,26 @@ export default class Menu extends React.Component {
                 isOpen={this.state.showCreateModal}
                 onRequestClose={this.handleCloseCreateModal}
                 appElement={document.getElementById('root')}
-                style={{overlay: {zIndex: 1000}}}
+                style={styles.modal}
             >
-                <h2>{"Create " + this.state.createModalType}</h2>
-                <form>
-                    <label> Name: <input type="text" value={this.state.formName} onChange={this.handleChange}/> </label>
-                </form>
-                {this.state.formName == null || this.state.formName === "" ?
-                    null
-                    :
-                    <button onClick={this.handleCloseCreateModal}>Create</button>
-                }
+                <div className="container-fluid">
+                    <h2>{"Create " + this.state.createModalType}</h2>
+                    <div className="row justify-content-between">
+                        <div className="col-6">
+                            <form>
+                                <label> Name: <input type="text" value={this.state.formName}
+                                                     onChange={this.handleChange}/> </label>
+                            </form>
+                        </div>
+                        <div className="col-2">
+                            {this.state.formName == null || this.state.formName === "" ?
+                                null
+                                :
+                                <button className="btn btn-dark btn-sm" onClick={this.handleCloseCreateModal}>Create</button>
+                            }
+                        </div>
+                    </div>
+                </div>
             </ReactModal>
 
             {/*Confirm modal*/}
@@ -159,15 +173,24 @@ export default class Menu extends React.Component {
                 isOpen={this.state.showConfirmModal}
                 onRequestClose={this.handleCloseConfirmModal}
                 appElement={document.getElementById('root')}
-                style={{overlay: {zIndex: 1000}}}
+                style={styles.modal}
             >
-                {this.state.isLoading ?
-                    <h2>Loading...</h2>
-                    :
-                    <h2>{this.state.isSuccess ? "Action completed successfully" : "Action failed successfully"}</h2>
-                }
-                {this.state.confirmModalMessage}<br/>
-                {this.state.isLoading ? null : <button onClick={this.handleCloseConfirmModal}>Close</button>}
+                <div className="container-fluid">
+                    {this.state.isLoading ?
+                        <h2>Loading...</h2>
+                        :
+                        <h2>{this.state.isSuccess ? "Action completed successfully" : "Action failed successfully"}</h2>
+                    }
+                    <div className="row justify-content-between">
+                        <div className="col-6">
+                            {this.state.confirmModalMessage}
+                        </div>
+                        <div className="col-2">
+                            {this.state.isLoading ? null :
+                                <button className="btn btn-dark btn-sm" onClick={this.handleCloseConfirmModal}>Close</button>}
+                        </div>
+                    </div>
+                </div>
             </ReactModal>
         </div>
     }

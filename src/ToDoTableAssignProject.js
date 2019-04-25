@@ -1,6 +1,7 @@
 import React from "react";
 import ReactModal from "react-modal";
 import Select from 'react-select';
+import styles from './modal.css.js'
 
 
 export default class ToDoTableAssignProject extends React.Component {
@@ -53,7 +54,7 @@ export default class ToDoTableAssignProject extends React.Component {
             method: 'PATCH'
         }).then(
             (result) => {
-                if(result.ok){
+                if (result.ok) {
                     this.setState({
                         stateSelect: false,
                         stateWaiting: false,
@@ -88,7 +89,7 @@ export default class ToDoTableAssignProject extends React.Component {
         this.setState({selectedProject: selected});
     }
 
-    handleClose(){
+    handleClose() {
         this.setState({
             stateSelect: true,
             stateWaiting: false,
@@ -102,30 +103,52 @@ export default class ToDoTableAssignProject extends React.Component {
     }
 
     render() {
-        return(
+        return (
             <ReactModal
                 isOpen={this.props.show}
                 onRequestClose={this.props.onClose}
                 appElement={document.getElementById('root')}
-                style={{overlay: {zIndex: 1000}}}
+                style={styles.modalLong}
             >
                 <h2>Assign To Project</h2>
-                {this.state.stateSelect ?
-                    <div>
-                        <Select
-                            value={this.state.selectedProject}
-                            onChange={this.handleChange}
-                            options={this.state.data}
-                        />
-                        <button onClick={this.handleProjectAssignment}>Submit</button>
-                    </div>
-                    : null}
-                {this.state.stateWaiting ? "Please wait..." : null}
-                {this.state.stateSuccess ?
-                    <div> Successfully assigned. <button onClick={this.handleClose}>OK</button></div> : null}
-                {this.state.stateError ? <div> Task failed successfully: {this.state.error}
-                    <button onClick={this.handleClose}>OK</button>
-                </div> : null}
+                <div className="container-fluid">
+                    {this.state.stateSelect ?
+                        <div className="row justify-content-between">
+                            <div className="col-6">
+                                <Select
+                                    value={this.state.selectedProject}
+                                    onChange={this.handleChange}
+                                    options={this.state.data}
+                                />
+                            </div>
+                            <div className="col-2">
+                                {this.state.selectedProject != null ?
+                                    <button className="btn btn-dark btn-sm"
+                                            onClick={this.handleProjectAssignment}>Submit</button>
+                                    : null}
+                            </div>
+                        </div>
+                        : null}
+                    {this.state.stateWaiting ? "Please wait..." : null}
+                    {this.state.stateSuccess ?
+                        <div className="row justify-content-between">
+                            <div className="col-6">
+                                Successfully assigned.
+                            </div>
+                            <div className="col-2">
+                                <button className="btn btn-dark btn-sm" onClick={this.handleClose}>OK</button>
+                            </div>
+                        </div> : null}
+                    {this.state.stateError ?
+                        <div className="row justify-content-between">
+                            <div className="col-6">
+                                Task failed successfully: {this.state.error}
+                            </div>
+                            <div className="col-2">
+                                <button className="btn btn-dark btn-sm" onClick={this.handleClose}>OK</button>
+                            </div>
+                        </div> : null}
+                </div>
             </ReactModal>
         )
     }
