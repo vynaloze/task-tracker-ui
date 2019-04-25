@@ -1,21 +1,30 @@
 import React from 'react';
+import queryString from 'query-string'
 import {Redirect, Link} from "react-router-dom";
 
-export default class Register extends React.Component {
+export default class ResetPassword extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            redirectToLogin: false,
             email: null,
             password: null,
             confirmPassword: null,
-            error: ""
+            token: null,
+            errorMsg: ""
         };
 
-        this.handleRegister = this.handleRegister.bind(this);
+        this.handleReset = this.handleReset.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.validateInput = this.validateInput.bind(this);
+    }
+
+    componentDidMount() {
+        const token = queryString.parse(this.props.location.search).token;
+        if(token == null){
+            this.setState({errorMsg: "Invalid link. Please try again."})
+        }
+        this.setState({token: token})
     }
 
     post(url, data) {
@@ -36,31 +45,32 @@ export default class Register extends React.Component {
                     const err = await result.json();
                     console.log(err);
                     this.setState({
-                        error: JSON.stringify(err)
+                        errorMsg: "Sorry, something went wrong. " +
+                            "Make sure that the the email is correct; " +
+                            "it is also possible that link is invalid or it has already expired. " +
+                            "Please try again."
                     });
                 }
             },
             async (error) => {
                 const err = await error.json();
                 this.setState({
-                    error: JSON.stringify(err)
+                    errorMsg: JSON.stringify(err)
                 });
             }
         )
     }
 
-    handleRegister() {
+    handleReset() {
         const isValid = this.validateInput();
         if (!isValid) {
             return false;
         }
-        this.post("http://localhost:3000/api/Users",
+        this.post("http://localhost:3000/api/Users/ResetPassword",
             JSON.stringify({
                 email: this.state.email,
                 password: this.state.password,
-                level: 1,
-                firstname: "FirstName",
-                lastname: "LastName"
+                token: this.state.token
             }));
     }
 
@@ -94,10 +104,10 @@ export default class Register extends React.Component {
     };
 
     render() {
-        if (this.state.redirectToLogin) return <Redirect to={"/login?register"}/>;
+        if (this.state.redirectToLogin) return <Redirect to={"/login?reset"}/>;
         return (
             <div className="container">
-                <h2>Register</h2>
+                <h2>Reset Password</h2>
                 <div className="mt-2 col-md-12">
                     <div>
                         <input name="email" type="text" value={this.state.email} autoFocus={true}
@@ -119,22 +129,15 @@ export default class Register extends React.Component {
                     </div>
                 </div>
                 <div className="text-danger mt-2 col-md-12">
-                    {this.state.error}
+                    {this.state.errorMsg}
                 </div>
                 <div className="mt-2 col-md-12">
-                    <button className="btn btn-dark btn-sm" onClick={this.handleRegister}>Register</button>
+                    <button className="btn btn-dark btn-sm" onClick={this.handleReset}>Reset</button>
                 </div>
-                <div className="row mt-2 col-md-12">
-                    <div className="col">
-                        <Link to="/login">
-                            <button className="btn btn-dark btn-sm">Back to Log In</button>
-                        </Link>
-                    </div>
-                    <div className="col">
-                        <Link to="/forgot">
-                            <button className="btn btn-dark btn-sm">Forgot password?</button>
-                        </Link>
-                    </div>
+                <div className="mt-2 col-md-12">
+                    <Link to="/login">
+                        <button className="btn btn-dark btn-sm">Back to Log In</button>
+                    </Link>
                 </div>
             </div>
         )

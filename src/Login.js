@@ -72,7 +72,7 @@ export default class Login extends React.Component {
                                onChange={this.handleChange} autoFocus={true} placeholder="Email"/>
                     </div>
                     <div>
-                        <input name="password" type="text" value={this.state.password}
+                        <input name="password" type="password" value={this.state.password}
                                onChange={this.handleChange} placeholder="Password" onKeyPress={this.handleKeyPress}/>
                     </div>
                 </div>
