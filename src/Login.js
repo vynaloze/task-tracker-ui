@@ -1,7 +1,6 @@
 import React from 'react';
-import {Redirect} from "react-router-dom";
 import Auth from './Auth'
-import {Link} from "react-router-dom";
+import {Redirect, Link} from "react-router-dom";
 
 
 export default class Login extends React.Component {
@@ -9,7 +8,7 @@ export default class Login extends React.Component {
         super(props);
         this.state = {
             redirectToReferrer: false,
-            username: null,
+            email: null,
             password: null,
             error: ""
         };
@@ -20,7 +19,7 @@ export default class Login extends React.Component {
     }
 
     async handleLogin() {
-        const success = await Auth.logIn(this.state.username, this.state.password);
+        const success = await Auth.logIn(this.state.email, this.state.password);
         if (success) {
             this.setState({
                 redirectToReferrer: true,
@@ -54,22 +53,38 @@ export default class Login extends React.Component {
         return (
             <div className="container">
                 <h2>Log In</h2>
+
+                {this.props.location.search.includes("register") ?
+                    <div className="text-success mt-2 col-md-12">
+                        Successfully registered
+                    </div>
+                    : null}
+
+                {this.props.location.search.includes("reset") ?
+                    <div className="text-success mt-2 col-md-12">
+                        Your password has been reset
+                    </div>
+                    : null}
+
                 <div className="mt-2 col-md-12">
                     <div>
-                        <input name="username" type="text" value={this.state.username}
-                               onChange={this.handleChange} autoFocus={true} placeholder="Username"/>
+                        <input name="email" type="text" value={this.state.email}
+                               onChange={this.handleChange} autoFocus={true} placeholder="Email"/>
                     </div>
                     <div>
                         <input name="password" type="text" value={this.state.password}
                                onChange={this.handleChange} placeholder="Password" onKeyPress={this.handleKeyPress}/>
                     </div>
                 </div>
+
                 <div className="text-danger mt-2 col-md-12">
                     {this.state.error}
                 </div>
+
                 <div className="mt-2 col-md-12">
                     <button className="btn btn-dark btn-sm" onClick={this.handleLogin}>Log In</button>
                 </div>
+
                 <div className="row mt-2 col-md-12">
                     <div className="col">
                         <Link to="/register">
@@ -77,7 +92,9 @@ export default class Login extends React.Component {
                         </Link>
                     </div>
                     <div className="col">
-                        <button className="btn btn-dark btn-sm">Forgot password?</button>
+                        <Link to="/forgot">
+                            <button className="btn btn-dark btn-sm">Forgot password?</button>
+                        </Link>
                     </div>
                 </div>
             </div>
