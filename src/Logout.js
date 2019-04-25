@@ -5,9 +5,16 @@ import Auth from "./Auth";
 const Logout = () => {
     Auth.logOut();
     return (
-        <div>
-            <h1>You have been logged out!</h1>
-            <Link to="/login">Log In</Link>
+        <div className="container">
+            <h2>Log Out</h2>
+            <div className="text-success mt-2 col-md-12">
+                You've been logged out.
+            </div>
+            <div className="mt-2 col-md-12">
+                <Link to="/login">
+                    <button className="btn btn-dark btn-sm">Log In</button>
+                </Link>
+            </div>
         </div>
     );
 };

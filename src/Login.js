@@ -1,8 +1,7 @@
 import React from 'react';
-import ReactSignupLoginComponent from 'react-signup-login-component';
 import {Redirect} from "react-router-dom";
 import Auth from './Auth'
-import ReactModal from "react-modal";
+import {Link} from "react-router-dom";
 
 
 export default class Login extends React.Component {
@@ -10,98 +9,41 @@ export default class Login extends React.Component {
         super(props);
         this.state = {
             redirectToReferrer: false,
-            showConfirmModal: false,
-            isLoading: true,
-            confirmModalTitle: "",
-            confirmModalMessage: ""
+            username: null,
+            password: null,
+            error: ""
         };
 
-        this.registerCallback = this.registerCallback.bind(this);
-        this.loginCallback = this.loginCallback.bind(this);
-        this.resetPasswordCallback = this.resetPasswordCallback.bind(this);
-        this.handleCloseConfirmModal = this.handleCloseConfirmModal.bind(this);
+        this.handleLogin = this.handleLogin.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
-    post(url, data, successMsg, errorMsg) {
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: data
-        }).then(res => res.json())
-            .then(
-                (result) => {
-                    if (result.id != null) { // means it was ok. Sorry for that.
-                        this.setState({
-                            isLoading: false,
-                            confirmModalMessage: successMsg
-                        });
-                    } else {
-                        let error;
-                        if(result.title == null) {
-                            error = result;
-                        } else {
-                            error = result.title;
-                        }
-                        this.setState({
-                            isLoading: false,
-                            confirmModalMessage: errorMsg + error
-                        });
-                    }
-                },
-                (error) => {
-                    this.setState({
-                        isLoading: false,
-                        confirmModalMessage: errorMsg + error.message
-                    });
-                }
-            )
-    }
-
-    registerCallback(data) {
-        this.setState({
-            isLoading: true,
-            showConfirmModal: true,
-            confirmModalTitle: "Registering new user",
-            confirmModalMessage: "Please wait..."
-        });
-
-        this.post("http://localhost:3000/api/Users",
-            JSON.stringify({
-                email: data.username,
-                password: data.password,
-                level: 1,
-                firstname: "FirstName",
-                lastname: "LastName"
-            }),
-            "New user " + data.username + " created",
-            "New user " + data.username + " was not created. Reason: ");
-    }
-
-    async loginCallback(data) {
-        const success = await Auth.logIn(data.username, data.password);
+    async handleLogin() {
+        const success = await Auth.logIn(this.state.username, this.state.password);
         if (success) {
-            this.setState({redirectToReferrer: true});
+            this.setState({
+                redirectToReferrer: true,
+                error: ""
+            });
         } else {
             this.setState({
-                showConfirmModal: true,
-                isLoading: false,
-                confirmModalTitle: "Login failed",
-                confirmModalMessage: "Invalid email or password"
+                error: "Invalid email or password"
             })
         }
     }
 
-    resetPasswordCallback(data) {
-        console.log(data);
-        alert('Recover password callback, see log on the console to see the data.');
+    handleChange(event) {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
     }
 
-    handleCloseConfirmModal() {
-        this.setState({showConfirmModal: false});
-    }
+    handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            this.handleLogin();
+        }
+    };
 
     render() {
         let {from} = this.props.location.state || {from: {pathname: "/"}};
@@ -110,34 +52,34 @@ export default class Login extends React.Component {
         if (redirectToReferrer) return <Redirect to={from}/>;
 
         return (
-            <div>
-                <ReactSignupLoginComponent
-                    title="Task Tracker"
-                    handleSignup={this.registerCallback}
-                    handleLogin={this.loginCallback}
-                    handleRecoverPassword={this.resetPasswordCallback}
-                    usernameCustomLabel="Email"
-                    passwordCustomLabel="Password"
-                    passwordConfirmationCustomLabel="Confirm Password"
-                    recoverPasswordCustomLabel="Reset Password"
-                    signupCustomLabel="Register"
-                    submitLoginCustomLabel="Login"
-                    goToLoginCustomLabel="Return to login"
-                    submitSignupCustomLabel="Submit"
-                    goToSignupCustomLabel="Register"
-                    submitRecoverPasswordCustomLabel="Reset"
-                />
-                {/*Confirm modal*/}
-                <ReactModal
-                    isOpen={this.state.showConfirmModal}
-                    onRequestClose={this.handleCloseConfirmModal}
-                    appElement={document.getElementById('root')}
-                    style={{overlay: {zIndex: 1000}}}
-                >
-                    <h2>{this.state.confirmModalTitle}</h2>
-                    {this.state.confirmModalMessage}<br/>
-                    {this.state.isLoading ? null : <button onClick={() => this.handleCloseConfirmModal}>Close</button>}
-                </ReactModal>
+            <div className="container">
+                <h2>Log In</h2>
+                <div className="mt-2 col-md-12">
+                    <div>
+                        <input name="username" type="text" value={this.state.username}
+                               onChange={this.handleChange} autoFocus={true} placeholder="Username"/>
+                    </div>
+                    <div>
+                        <input name="password" type="text" value={this.state.password}
+                               onChange={this.handleChange} placeholder="Password" onKeyPress={this.handleKeyPress}/>
+                    </div>
+                </div>
+                <div className="text-danger mt-2 col-md-12">
+                    {this.state.error}
+                </div>
+                <div className="mt-2 col-md-12">
+                    <button className="btn btn-dark btn-sm" onClick={this.handleLogin}>Log In</button>
+                </div>
+                <div className="row mt-2 col-md-12">
+                    <div className="col">
+                        <Link to="/register">
+                            <button className="btn btn-dark btn-sm">Register</button>
+                        </Link>
+                    </div>
+                    <div className="col">
+                        <button className="btn btn-dark btn-sm">Forgot password?</button>
+                    </div>
+                </div>
             </div>
         );
     }

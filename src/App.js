@@ -7,9 +7,12 @@ import {
 } from "react-router-dom";
 
 import Home from './Home';
+import Auth from './Auth'
 import Login from './Login';
 import Logout from './Logout';
-import Auth from './Auth'
+import Register from './Register'
+import ForgotPassword from './ForgotPassword'
+import ResetPassword from './ResetPassword'
 
 export default class App extends Component {
     render() {
@@ -38,6 +41,9 @@ export default class App extends Component {
                 <PrivateRoute exact path="/" component={Home}/>
                 <Route path="/login" component={Login}/>
                 <Route path="/logout" component={Logout}/>
+                <Route path="/register" component={Register}/>
+                <Route path="/forgot" component={ForgotPassword}/>
+                <Route path="/reset" component={ResetPassword}/>
             </Router>
         );
     }
