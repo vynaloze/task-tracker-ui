@@ -97,7 +97,7 @@ export default class ResetPassword extends React.Component {
 
     handleKeyPress = (event) => {
         if (event.key === 'Enter') {
-            this.handleRegister();
+            this.handleUpdate();
         } else {
             this.validateInput();
         }

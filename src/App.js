@@ -13,6 +13,7 @@ import Logout from './Logout';
 import Register from './Register'
 import ForgotPassword from './ForgotPassword'
 import ResetPassword from './ResetPassword'
+import Account from './Account'
 
 export default class App extends Component {
     render() {
@@ -44,6 +45,7 @@ export default class App extends Component {
                 <Route path="/register" component={Register}/>
                 <Route path="/forgot" component={ForgotPassword}/>
                 <Route path="/reset" component={ResetPassword}/>
+                <PrivateRoute path="/account" component={Account}/>
             </Router>
         );
     }

@@ -6,8 +6,6 @@ import WeeklyOverview from "./WeeklyOverview";
 import Menu from "./Menu"
 
 //todo
-// 7. reset password
-// 8. set account information
 // 9. administration page?
 // 10. reports per user (working time, overtime, holidays,…) and project
 
