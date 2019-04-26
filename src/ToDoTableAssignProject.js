@@ -2,6 +2,7 @@ import React from "react";
 import ReactModal from "react-modal";
 import Select from 'react-select';
 import styles from './modal.css.js'
+import Auth from "./Auth";
 
 
 export default class ToDoTableAssignProject extends React.Component {
@@ -27,7 +28,7 @@ export default class ToDoTableAssignProject extends React.Component {
     }
 
     loadProjects() {
-        fetch("http://localhost:3000/api/Projects")
+        fetch("http://localhost:3000/api/Projects", {headers: {'Authorization': Auth.getAuthHeader()}})
             .then(res => res.json())
             .then(
                 (result) => {
@@ -51,7 +52,8 @@ export default class ToDoTableAssignProject extends React.Component {
 
     handleProjectAssignment() {
         fetch("http://localhost:3000/api/ToDos/" + this.props.todoId + "/Project/" + this.state.selectedProject.value, {
-            method: 'PATCH'
+            method: 'PATCH',
+            headers: {'Authorization': Auth.getAuthHeader()}
         }).then(
             (result) => {
                 if (result.ok) {

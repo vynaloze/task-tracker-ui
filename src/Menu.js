@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactModal from 'react-modal'
 import styles from './modal.css.js'
+import Auth from "./Auth";
 
 export default class Menu extends React.Component {
     constructor(props) {
@@ -64,6 +65,7 @@ export default class Menu extends React.Component {
         fetch(url, {
             method: 'POST',
             headers: {
+                'Authorization': Auth.getAuthHeader(),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },

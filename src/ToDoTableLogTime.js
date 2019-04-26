@@ -2,6 +2,7 @@ import React from 'react';
 import ReactModal from "react-modal";
 import DatePicker from 'react-datepicker';
 import styles from './modal.css.js'
+import Auth from "./Auth";
 
 export default class ToDoTableLogTime extends React.Component {
     constructor(props) {
@@ -39,7 +40,8 @@ export default class ToDoTableLogTime extends React.Component {
             + "/WorkingTime/" + (this.state.startDate.getTime() / 1000).toFixed(0)
             + '/' + (this.state.endDate.getTime() / 1000).toFixed(0);
         fetch(url, {
-            method: 'PATCH'
+            method: 'PATCH',
+            headers: {'Authorization': Auth.getAuthHeader()}
         }).then(
             async (result) => {
                 if (result.ok) {

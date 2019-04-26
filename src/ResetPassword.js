@@ -1,6 +1,7 @@
 import React from 'react';
 import queryString from 'query-string'
 import {Redirect, Link} from "react-router-dom";
+import Auth from "./Auth";
 
 export default class ResetPassword extends React.Component {
     constructor(props) {
@@ -31,6 +32,7 @@ export default class ResetPassword extends React.Component {
         fetch(url, {
             method: 'POST',
             headers: {
+                'Authorization': Auth.getAuthHeader(),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },

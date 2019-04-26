@@ -21,7 +21,8 @@ export default class ToDoTable extends React.Component {
 
     handleUserAssignment(todoId, userId) {
         fetch("http://localhost:3000/api/ToDos/" + todoId + "/User/" + userId, {
-            method: 'PATCH'
+            method: 'PATCH',
+            headers: {'Authorization': Auth.getAuthHeader()}
         }).then(
             (result) => {
                 this.props.reloadParentData();
@@ -91,13 +92,14 @@ export default class ToDoTable extends React.Component {
         }, {
             id: 'finished',
             Header: 'Finished',
-            accessor: d => d.endTime != null ? 'Yes' : '',
+            accessor: d => d.endTime != null ? 'Yes' : 'No',
             Cell: props => {
-                if (props.value !== '') {
-                    return <div>{props.value}</div>
+                if (props.value === 'No' && props.original.user != null && props.original.user.id === Number(Auth.getUserId())) {
+                    return <button className="btn btn-secondary btn-sm"
+                                   onClick={() => this.handleOpenLogTime(props.original.id)}>Log Time</button>
                 }
-                return <button className="btn btn-secondary btn-sm"
-                               onClick={() => this.handleOpenLogTime(props.original.id)}>Log Time</button>
+                return <div>{props.value}</div>
+
             }
         }, {
             id: 'startTime',

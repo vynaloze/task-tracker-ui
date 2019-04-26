@@ -4,6 +4,7 @@ import 'react-table/react-table.css'
 import ToDoTable from './ToDoTable'
 import WeeklyOverview from "./WeeklyOverview";
 import Menu from "./Menu"
+import Auth from "./Auth";
 
 //todo
 // 9. administration page?
@@ -27,7 +28,7 @@ export default class Home extends React.Component {
     }
 
     loadToDos() {
-        fetch("http://localhost:3000/api/ToDos")
+        fetch("http://localhost:3000/api/ToDos", {headers: {'Authorization': Auth.getAuthHeader()}})
             .then(res => res.json())
             .then(
                 (result) => {

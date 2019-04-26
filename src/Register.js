@@ -1,5 +1,6 @@
 import React from 'react';
 import {Redirect, Link} from "react-router-dom";
+import Auth from "./Auth";
 
 export default class Register extends React.Component {
     constructor(props) {
@@ -22,6 +23,7 @@ export default class Register extends React.Component {
         fetch(url, {
             method: 'POST',
             headers: {
+                'Authorization': Auth.getAuthHeader(),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
